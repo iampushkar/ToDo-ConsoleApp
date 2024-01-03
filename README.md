@@ -43,7 +43,7 @@ To run the Console ToDo App, you'll need Java 8 installed on your machine. Follo
 
 ## Contributing
 
-Contributions are absolutely welcome! If you find a bug or have a fun idea for an improvement, feel free to open an issue or submit a pull request. We're all about making this project more enjoyable together.
+Contributions are absolutely welcome! If you find a bug or have a fun idea for an improvement, feel free to open an issue or submit a pull request. We're all about making this project more enjoyable together .
 
 ## License
 
