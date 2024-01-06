@@ -36,5 +36,12 @@ public class TaskService implements ITaskService {
         return taskRepository.getTasks();
         // throw new UnsupportedOperationException("Unimplemented method 'showTasks'");
     }
+
+    public Task getTaskById(int taskId) {
+
+        return taskRepository.getTaskById(taskId);
+    }
+
+
     
 }

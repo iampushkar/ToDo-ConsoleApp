@@ -1,8 +1,10 @@
 package controller;
 
 import java.util.List;
+import java.util.Scanner;
 
 import dto.Task;
+import dto.TaskPriority;
 import dto.TaskStatus;
 import service.ITaskService;
 import service.TaskService;
@@ -27,12 +29,13 @@ public class ToDoController {
     System.out.println("2. Update an existing task");
     System.out.println("3. Delete an existing task");
     System.out.println("4. List all Tasks");
-    System.out.println("5. Exit");
+    System.out.println("5. Search Task By ID");
+    System.out.println("6. Exit");
   }
 
   private String getUserInput(String inputMessage) {
     System.out.print(inputMessage + " : ");
-    return System.console().readLine();
+    return new Scanner(System.in).nextLine();
   }
 
   private void performAction(int action) {
@@ -50,6 +53,9 @@ public class ToDoController {
         getTasks();
         break;
       case 5:
+        searchTaskById();
+        break;
+      case 6:
         System.exit(200);
       default:
         System.out.println("Invalid Action");
@@ -61,7 +67,7 @@ public class ToDoController {
     String taskDeadline = getUserInput(
         "Enter the Task Deadline in format as 01-Jan-2024 [Optional, Press Enter to skip] ");
 
-    Task task = new Task(Task.getTaskAutoId(), taskName, TaskStatus.PENDING, taskDeadline);
+    Task task = new Task(Task.getTaskAutoId(), taskName, TaskStatus.PENDING, taskDeadline, TaskPriority.HIGH);
     return taskService.addTask(task);
 
   }
@@ -81,9 +87,25 @@ public class ToDoController {
     System.out.println("-------------------------------------------------------------------------------");
     tasks.forEach(task -> {
       System.out.println(task.getTaskId() + " | " + task.getTaskName() + " | " + task.getTaskStatus() + " | "
-          + task.getTaskDeadline());
+          + task.getTaskDeadline() + task.getTaskPriority());
     });
     System.out.println("-------------------------------------------------------------------------------");
   }
 
+  private void searchTaskById() {
+    String taskIdInput = getUserInput("Enter the Task ID to search");
+
+      int taskId = Integer.parseInt(taskIdInput);
+      Task task = taskService.getTaskById(taskId);
+      if (task != null) {
+        System.out.println("Task found:");
+        System.out.println("ID: " + task.getTaskId());
+        System.out.println("Name: " + task.getTaskName());
+        System.out.println("Priority: " + task.getTaskPriority());
+        System.out.println("Status: " + task.getTaskStatus());
+      } else {
+        System.out.println("Task not found with ID: " + taskId);
+      }
+
+  }
 }
