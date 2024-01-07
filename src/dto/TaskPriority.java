@@ -1,8 +1,8 @@
 package dto;
 
 public enum TaskPriority {
-    LOW,
-    MEDIUM,
-    HIGH
+    URGENT,
+    IMPORTANT,
+    HIGHLY_IMPORTANT_AND_URGENT
 
 }

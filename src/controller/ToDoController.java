@@ -64,10 +64,35 @@ public class ToDoController {
 
   private boolean addTask() {
     String taskName = getUserInput("Enter the Task Name");
-    String taskDeadline = getUserInput(
-        "Enter the Task Deadline in format as 01-Jan-2024 [Optional, Press Enter to skip] ");
 
-    Task task = new Task(Task.getTaskAutoId(), taskName, TaskStatus.PENDING, taskDeadline, TaskPriority.HIGH);
+    TaskStatus taskStatus = null;
+    while (taskStatus == null) {
+      System.out.println("Available Task Status: PENDING, INPROGRESS, DONE    --(CHOOSE FROM HERE)");
+      String taskStatusInput = getUserInput("Enter the Task Status");
+
+      try {
+        taskStatus = TaskStatus.valueOf(taskStatusInput.toUpperCase());
+      } catch (IllegalArgumentException e) {
+        System.out.println("Invalid Task Status entered. Please enter a valid status.");
+      }
+    }
+
+    String taskDeadline = getUserInput(
+            "Enter the Task Deadline in format as 01-Jan-2024 [Optional, Press Enter to skip] ");
+
+    TaskPriority taskPriority = null;
+    while (taskPriority == null) {
+      System.out.println("Available Task Priority: URGENT, HIGHLY IMPORTANT, IMPORTANT  --(CHOOSE FROM HERE");
+      String taskPriorityInput = getUserInput("Enter the task Priority");
+
+      try {
+        taskPriority = TaskPriority.valueOf(taskPriorityInput.toUpperCase());
+      } catch (IllegalArgumentException e) {
+        System.out.println("Invalid Task Priority entered. Please enter a valid priority.");
+      }
+    }
+
+    Task task = new Task(Task.getTaskAutoId(), taskName, taskStatus, taskDeadline, taskPriority);
     return taskService.addTask(task);
 
   }
@@ -83,28 +108,36 @@ public class ToDoController {
   private void getTasks() {
     List<Task> tasks = taskService.getTasks();
     System.out.println("-------------------------------------------------------------------------------");
-    System.out.println("ID" + " | " + "TASK NAME" + " | " + "TASK STATUS" + " | " + "DEADLINE");
+    System.out.println("TASK ID" + " | " + "TASK NAME" + " | " + "TASK STATUS" + " | " + "DEADLINE"  + " | " + "TASK PRIORITY");
+
     System.out.println("-------------------------------------------------------------------------------");
     tasks.forEach(task -> {
       System.out.println(task.getTaskId() + " | " + task.getTaskName() + " | " + task.getTaskStatus() + " | "
           + task.getTaskDeadline() + task.getTaskPriority());
     });
-    System.out.println("-------------------------------------------------------------------------------");
+    System.out.println("--------------------------------------------------------------------------------------");
+
   }
 
   private void searchTaskById() {
     String taskIdInput = getUserInput("Enter the Task ID to search");
 
-      int taskId = Integer.parseInt(taskIdInput);
-      Task task = taskService.getTaskById(taskId);
-      if (task != null) {
-        System.out.println("Task found:");
-        System.out.println("ID: " + task.getTaskId());
-        System.out.println("Name: " + task.getTaskName());
-        System.out.println("Priority: " + task.getTaskPriority());
-        System.out.println("Status: " + task.getTaskStatus());
-      } else {
-        System.out.println("Task not found with ID: " + taskId);
+
+      try {
+        int taskId = Integer.parseInt(taskIdInput);
+        Task task = taskService.getTaskById(taskId);
+        if (task != null) {
+          System.out.println("Task found:");
+          System.out.println("ID: " + task.getTaskId());
+          System.out.println("Name: " + task.getTaskName());
+          System.out.println("Priority: " + task.getTaskPriority());
+          System.out.println("Status: " + task.getTaskStatus());
+        } else {
+          System.out.println("Task not found with ID: " + taskId);
+        }
+      }
+      catch (NumberFormatException e) {
+        System.out.println("Invalid Task ID format. Please enter a valid integer.");
       }
 
   }
