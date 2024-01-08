@@ -35,7 +35,7 @@ public class ToDoController {
 
   private String getUserInput(String inputMessage) {
     System.out.print(inputMessage + " : ");
-    return new Scanner(System.in).nextLine();
+    return System.console().readLine();
   }
 
   private void performAction(int action) {
@@ -63,26 +63,21 @@ public class ToDoController {
   }
 
   private boolean addTask() {
+
     String taskName = getUserInput("Enter the Task Name");
-
-    TaskStatus taskStatus = null;
-    while (taskStatus == null) {
-      System.out.println("Available Task Status: PENDING, INPROGRESS, DONE    --(CHOOSE FROM HERE)");
-      String taskStatusInput = getUserInput("Enter the Task Status");
-
-      try {
-        taskStatus = TaskStatus.valueOf(taskStatusInput.toUpperCase());
-      } catch (IllegalArgumentException e) {
-        System.out.println("Invalid Task Status entered. Please enter a valid status.");
-      }
+    while(taskName == null || taskName.isEmpty()){
+      System.out.println("Please provide task name, it is a mandatory field.");
+      taskName = getUserInput("Enter the Task Name");
     }
 
     String taskDeadline = getUserInput(
             "Enter the Task Deadline in format as 01-Jan-2024 [Optional, Press Enter to skip] ");
-
+    if(taskDeadline == null|| taskDeadline.isBlank()){
+      taskDeadline = "Not provided";
+    }
     TaskPriority taskPriority = null;
     while (taskPriority == null) {
-      System.out.println("Available Task Priority: URGENT, HIGHLY IMPORTANT, IMPORTANT  --(CHOOSE FROM HERE");
+      System.out.println("Available Task Priorities: LOW, MEDIUM, HIGH. Please choose from these");
       String taskPriorityInput = getUserInput("Enter the task Priority");
 
       try {
@@ -92,7 +87,7 @@ public class ToDoController {
       }
     }
 
-    Task task = new Task(Task.getTaskAutoId(), taskName, taskStatus, taskDeadline, taskPriority);
+    Task task = new Task(Task.getTaskAutoId(), taskName, TaskStatus.PENDING, taskDeadline, taskPriority);
     return taskService.addTask(task);
 
   }
@@ -113,9 +108,9 @@ public class ToDoController {
     System.out.println("-------------------------------------------------------------------------------");
     tasks.forEach(task -> {
       System.out.println(task.getTaskId() + " | " + task.getTaskName() + " | " + task.getTaskStatus() + " | "
-          + task.getTaskDeadline() + task.getTaskPriority());
+          + task.getTaskDeadline() + " | " + task.getTaskPriority());
     });
-    System.out.println("--------------------------------------------------------------------------------------");
+    System.out.println("---------------------------------------------------------------------------------");
 
   }
 
@@ -127,7 +122,7 @@ public class ToDoController {
         int taskId = Integer.parseInt(taskIdInput);
         Task task = taskService.getTaskById(taskId);
         if (task != null) {
-          System.out.println("Task found:");
+          System.out.println("Task found!!");
           System.out.println("ID: " + task.getTaskId());
           System.out.println("Name: " + task.getTaskName());
           System.out.println("Priority: " + task.getTaskPriority());
