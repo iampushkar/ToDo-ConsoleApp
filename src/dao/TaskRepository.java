@@ -18,6 +18,12 @@ public class TaskRepository {
     }
 
 
-    
-    
+    public Task getTaskById(int taskId) {
+        for (Task task : taskDB ){
+            if (task.getTaskId() == taskId) {
+                return task;
+            }
+        }
+        return null;
+    }
 }
