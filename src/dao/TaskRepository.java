@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 import dto.Task;
+import exception.DeleteTaskException;
+import exception.UpdateTaskException;
 
 public class TaskRepository {
 
@@ -13,26 +15,31 @@ public class TaskRepository {
         return taskDB.add(task);
     }
 
-    public boolean updateTask(Task updatedTask){
+    public List<Task> updateTask(Task updatedTask){
         OptionalInt optionalInt = findTask(updatedTask);
        if(optionalInt.isPresent() && checkForChanges(updatedTask,taskDB.get(optionalInt.getAsInt()))){
                taskDB.set(optionalInt.getAsInt(),updatedTask);
        }
-        return false;
+       else{
+           throw new UpdateTaskException("Failed to update the task check the Task data" + taskDB.toString());
+       }
+       return taskDB;
     }
 
     private boolean checkForChanges(Task updatedTask,Task task) {
         return !updatedTask.getTaskName().equals(task.getTaskName()) || !updatedTask.getTaskDeadline().equals(task.getTaskDeadline()) || !updatedTask.getTaskStatus().equals(task.getTaskStatus());
     }
 
-    public boolean delete(Task updatedTask){
+    public List<Task> delete(Task updatedTask){
         OptionalInt optionalInt = findTask(updatedTask);
-        if(optionalInt.isPresent() && checkForChanges(updatedTask,taskDB.get(optionalInt.getAsInt()))){
+        if(optionalInt.isPresent()){
             taskDB.remove(optionalInt.getAsInt());
         }
-        return false;
+        else{
+            throw new DeleteTaskException("Unable to delete the Task" + updatedTask.toString());
+        }
+        return taskDB;
     }
-
     public List<Task> getTasks() {
         return taskDB;
     }
