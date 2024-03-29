@@ -1,39 +1,73 @@
-package dto;
+package DTO;
+
+import javax.print.DocFlavor.STRING;
 
 public class Task {
-    private int taskId;
-    private String taskName;
-    private TaskStatus taskStatus;
-    private String deadline;
 
-    private static int taskAutoId = 0;
-
-    public Task(int taskId, String taskName, TaskStatus taskStatus, String deadline) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.taskStatus = taskStatus;
-        this.deadline = deadline;
+    private enum TaskStatus {
+        PENDING,
+        INPROGRESS,
+        DONE
     }
 
-    public int getTaskId() {
+    private String taskId;
+    private String taskName;
+    private String assignedTo;
+    private String deadline;
+    private String taskStatus;
+
+    public Task(String taskId, String taskName, String assignedTo, String deadline) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.assignedTo = assignedTo;
+        this.deadline = deadline;
+        this.taskStatus = TaskStatus.PENDING.toString();
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public String getTaskId() {
         return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     public String getTaskName() {
         return taskName;
     }
 
-    public String getTaskStatus() {
-        return String.valueOf(taskStatus);
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
-    public String getTaskDeadline() {
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public String getDeadline() {
         return deadline;
     }
 
-    public static int getTaskAutoId() {
-        taskAutoId++;
-        return taskAutoId;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Task task = (Task) obj;
+        return taskId.equals(task.getTaskId());
     }
 
 }
