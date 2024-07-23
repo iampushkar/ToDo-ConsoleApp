@@ -19,6 +19,18 @@ public class Task {
         return taskId;
     }
 
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
     public String getTaskName() {
         return taskName;
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Scanner;
 
 import dto.Task;
 import dto.TaskStatus;
@@ -14,7 +15,7 @@ public class ToDoController {
   public void runToDoApp() {
     while (true) {
       showMenu();
-      String userAction = getUserInput("Enter the Action Number");
+      String userAction = getUserInput("Enter the Action Number : ");
       performAction(Integer.parseInt(userAction));
     }
 
@@ -28,11 +29,14 @@ public class ToDoController {
     System.out.println("3. Delete an existing task");
     System.out.println("4. List all Tasks");
     System.out.println("5. Exit");
+    System.out.println();
   }
 
   private String getUserInput(String inputMessage) {
-    System.out.print(inputMessage + " : ");
-    return System.console().readLine();
+    Scanner in = new Scanner(System.in);
+    System.out.println(inputMessage);
+    String taskNumber = in.next();
+    return taskNumber;
   }
 
   private void performAction(int action) {
@@ -66,12 +70,28 @@ public class ToDoController {
 
   }
 
-  private boolean updateTask() {
-    return false;
+  private Task updateTask() {
+    String taskId = getUserInput("Enter the Task ID to update : ");
+    System.out.println("Task ID to update : " + taskId);
+
+    System.out.println("Task Update options :");
+    System.out.println("1. Status");
+    System.out.println("2. Name");
+    System.out.println("3. Deadline");
+
+    String udpateQuery = getUserInput("What do you want to update in taskId ?"
+            + taskId + " Enter in form of array : '(name), (status), (deadline)', leave blank if no update : Eg : ,done,");
+    String[] updateQueryArray = udpateQuery.split(",");
+
+    Task task = taskService.getTaskById(Integer.parseInt(taskId));
+    return taskService.updateTask(task, updateQueryArray);
   }
 
-  private boolean deleteTask() {
-    return false;
+  private void deleteTask() {
+    String taskId = getUserInput("Enter the Task ID to delete : ");
+    System.out.println("Task ID to delete : " + taskId);
+    taskService.deleteTask(Integer.parseInt(taskId));
+    System.out.println("Task " +taskId + " deleted successfully");
   }
 
   private void getTasks() {

@@ -8,10 +8,12 @@ public interface ITaskService {
 
     public boolean addTask(Task task);
 
-    public List<Task> updateTask(Task task);
+    public Task updateTask(Task task, String[] taskUpdateQuery);
 
-    public List<Task> deleteTask(int taskId);
+    public void deleteTask(int taskId);
 
     public List<Task> getTasks();
+
+    public Task getTaskById(int taskId);
 
 }

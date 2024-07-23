@@ -20,15 +20,13 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public List<Task> updateTask(Task task) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateTask'");
+    public Task updateTask(Task task, String[] taskUpdateQuery) {
+        return taskRepository.updateTask(task, taskUpdateQuery);
     }
 
     @Override
-    public List<Task> deleteTask(int taskId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTask'");
+    public void deleteTask(int taskId) {
+        taskRepository.deleteTask(taskId);
     }
 
     @Override
@@ -36,5 +34,13 @@ public class TaskService implements ITaskService {
         return taskRepository.getTasks();
         // throw new UnsupportedOperationException("Unimplemented method 'showTasks'");
     }
-    
+
+    @Override
+    public Task getTaskById(int taskId) {
+        Task task = taskRepository.getTask(taskId);
+        if(task == null)
+            throw new UnsupportedOperationException("Task not found");
+        return task;
+    }
+
 }
