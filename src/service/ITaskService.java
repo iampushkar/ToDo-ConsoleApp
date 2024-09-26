@@ -14,4 +14,5 @@ public interface ITaskService {
 
     public List<Task> getTasks();
 
+    public Task getTaskById(int taskId);
 }
